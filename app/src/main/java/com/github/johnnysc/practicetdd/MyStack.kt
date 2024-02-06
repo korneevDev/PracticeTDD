@@ -5,13 +5,11 @@ interface MyStack<T> {
     fun pop(): T
     fun push(item: T)
 
-    abstract class Abstract<T>(
+    open class LIFO<T>(
         private val maxCount: Int
-    ) : MyStack<T> {
+    ) : MyStack<T>{
         protected val stack = arrayOfNulls<Any?>(maxCount)
         private var lastIndex = 0
-
-
         init {
             if (maxCount < 1)
                 throw IllegalStateException()
@@ -35,13 +33,9 @@ interface MyStack<T> {
         }
     }
 
-    class LIFO<T>(
-        maxCount: Int
-    ) : Abstract<T>(maxCount)
-
     class FIFO<T>(
         maxCount: Int
-    ) : Abstract<T>(maxCount){
+    ) : LIFO<T>(maxCount){
 
         override fun pop(): T {
             super.pop()
