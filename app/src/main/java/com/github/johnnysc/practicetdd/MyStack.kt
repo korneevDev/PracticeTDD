@@ -8,7 +8,7 @@ interface MyStack<T> {
     abstract class Abstract<T>(
         private val maxCount: Int
     ) : MyStack<T> {
-        protected val stack : Array<Any?>
+        protected val stack = arrayOfNulls<Any?>(maxCount)
         private var lastIndex = 0
 
 
@@ -16,12 +16,11 @@ interface MyStack<T> {
             if (maxCount < 1)
                 throw IllegalStateException()
 
-            stack = Array(maxCount){null}
         }
 
         override fun pop(): T {
             if(lastIndex <= 0){
-                throw IllegalStateException()
+                throw IllegalStateException("Stack is empty")
             }
 
             return stack[--lastIndex] as T
