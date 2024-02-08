@@ -38,7 +38,7 @@ class ParserTest {
         val byte1: Byte = 119
         val expected = listOf<Any>(byte, negativeByte, byte1)
         for(i in 0 until(expected.size)){
-               assertEquals(actual[i], expected[i])
+               assertEquals(expected[i], actual[i])
         }
     }
 
