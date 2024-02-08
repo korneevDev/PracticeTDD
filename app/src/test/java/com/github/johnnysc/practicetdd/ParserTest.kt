@@ -32,36 +32,51 @@ class ParserTest {
     @Test
     fun `test byte`() {
         val parser = Parser.Base(delimiter = "\n")
-        val actual = parser.parse(raw = "127")
+        val actual = parser.parse(raw = "127\n-128\n119")
         val byte: Byte = 127
-        val expected = listOf<Any>(byte)
-        assertEquals(expected, actual)
+        val negativeByte: Byte = -128
+        val byte1: Byte = 119
+        val expected = listOf<Any>(byte, negativeByte, byte1)
+        for(i in 0 until(expected.size)){
+               assertEquals(actual[i], expected[i])
+        }
     }
 
     @Test
     fun `test short`() {
         val parser = Parser.Base(delimiter = "\n")
-        val actual = parser.parse(raw = "128")
+        val actual = parser.parse(raw = "128\n32767\n-32768")
         val short: Short = 128
-        val expected = listOf<Any>(short)
+        val shortMax: Short = 32767
+        val shortMin: Short = -32768
+        val expected = listOf<Any>(short, shortMax, shortMin)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `test int`() {
         val parser = Parser.Base(delimiter = "\n")
-        val actual = parser.parse(raw = "32768")
+        val actual = parser.parse(raw = "32768\n2147483647\n-2147483648")
         val int: Int = 32768
-        val expected = listOf<Any>(int)
+        val maxInt: Int = Int.MAX_VALUE
+        val minInt: Int = Int.MIN_VALUE
+        val expected = listOf<Any>(int, maxInt, minInt)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `test long`() {
         val parser = Parser.Base(delimiter = "\n")
-        val actual = parser.parse(raw = "2147483648")
+        val actual = parser.parse(raw = "2147483648\n" +
+                                "-9223372036854775808\n" +
+                                "9223372036854775807\n" +
+                                "9223362036854775807")
         val long: Long = 2147483648
-        val expected = listOf<Any>(long)
+        val minLong: Long = -9223372036854775807L-1L
+        val maxLong: Long = 9223372036854775807L
+        val almostMaxLong: Long = 9223362036854775807L
+        val expected = listOf<Any>(long, minLong, maxLong, almostMaxLong)
+
         assertEquals(expected, actual)
     }
 
