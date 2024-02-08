@@ -41,19 +41,44 @@ class TimedCacheDataSourceTest {
 
         now.time = 750
         cacheDataSource.add(SimpleData("three"))
+        cacheDataSource.add(SimpleData("four"))
+        cacheDataSource.add(SimpleData("five"))
+        cacheDataSource.add(SimpleData("six"))
+        cacheDataSource.add(SimpleData("seven"))
 
         now.time = 999
-        var expected = listOf(SimpleData("one"), SimpleData("two"), SimpleData("three"))
+        var expected = listOf(
+            SimpleData("one"),
+            SimpleData("two"),
+            SimpleData("three"),
+            SimpleData("four"),
+            SimpleData("five"),
+            SimpleData("six"),
+            SimpleData("seven")
+        )
         var actual = cacheDataSource.data()
         assertEquals(expected, actual)
 
         now.time = 1001
-        expected = listOf(SimpleData("two"), SimpleData("three"))
+        expected = listOf(
+            SimpleData("two"),
+            SimpleData("three"),
+            SimpleData("four"),
+            SimpleData("five"),
+            SimpleData("six"),
+            SimpleData("seven")
+        )
         actual = cacheDataSource.data()
         assertEquals(expected, actual)
 
         now.time = 1301
-        expected = listOf(SimpleData("three"))
+        expected = listOf(
+            SimpleData("three"),
+            SimpleData("four"),
+            SimpleData("five"),
+            SimpleData("six"),
+            SimpleData("seven")
+        )
         actual = cacheDataSource.data()
         assertEquals(expected, actual)
 
