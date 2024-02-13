@@ -2,6 +2,12 @@ package com.github.johnnysc.practicetdd
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.github.johnnysc.practicetdd.seven.Communication
+import com.github.johnnysc.practicetdd.seven.Good
+import com.github.johnnysc.practicetdd.seven.GoodFilter
+import com.github.johnnysc.practicetdd.seven.MainViewModel
+import com.github.johnnysc.practicetdd.seven.OS
+import com.github.johnnysc.practicetdd.seven.ProcessorType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -215,5 +221,9 @@ class MainViewModelTest {
 
         override fun <T> map(mapper: Good.Mapper<T>): T =
             mapper.map(ram, os, displaySize, processor, price)
+
+        override fun check(filter: GoodFilter): Boolean =
+            filter.map(ram, os, displaySize, processor, price)
+
     }
 }
