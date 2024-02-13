@@ -138,6 +138,7 @@ class LotteryTest {
         )
         list.forEach { number ->
             val actual: LotteryTicket = factory.ticket(number = number)
+            println(number)
             assertEquals(true, actual.isFake())
         }
     }
