@@ -12,7 +12,7 @@ interface For {
 
     class Base : For {
 
-        override fun repeat(max: Int, start: Int, block: (Int) -> Boolean) {
+        override fun repeat(max: Int, start: Int, block: (Int) -> Boolean)  {
             for (i in start until max) {
                 if (block.invoke(i))
                     break
