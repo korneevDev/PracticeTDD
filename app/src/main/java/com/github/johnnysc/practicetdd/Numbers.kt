@@ -27,9 +27,9 @@ interface Numbers {
 
         override fun difference(): Int = number1 - number2
 
-        private fun <T : Number> handle(number1: T, number2: T) : T{
+        private fun <T : Number> handle(number1: T, number2: T): T {
             return try {
-                summator.sum(number1, number2, isLong.get())
+                summator.sum(number1, number2, isLong)
             } catch (e: UninitializedPropertyAccessException) {
                 throw IllegalAccessException()
             }
@@ -48,24 +48,24 @@ interface Numbers {
 
 interface SumNumbers {
 
-    fun <T : Number> sum(num1: T, num2: T, isLong: Boolean): T
+    fun <T : Number> sum(num1: T, num2: T, isLong: STATE): T
 
     class Base : SumNumbers {
-        override fun <T : Number> sum(num1: T, num2: T, isLong: Boolean): T {
-            if (num1 is Long && isLong)
-                return (num1.toLong() + num2.toLong()) as T
+        override fun <T : Number> sum(num1: T, num2: T, isLong: STATE): T {
+            when (isLong) {
+                STATE.LONG -> if (num1 is Long)
+                    return (num1.toLong() + num2.toLong()) as T
 
-            if (num1 is Int && !isLong)
-                return (num1.toInt() + num2.toInt()) as T
+                STATE.INT -> if (num1 is Int)
+                    return (num1.toInt() + num2.toInt()) as T
+            }
 
             throw IllegalStateException()
         }
     }
 }
 
-enum class STATE(private val state: Boolean) {
-    LONG(true),
-    INT(false);
-
-    fun get() = state
+enum class STATE {
+    LONG,
+    INT
 }
