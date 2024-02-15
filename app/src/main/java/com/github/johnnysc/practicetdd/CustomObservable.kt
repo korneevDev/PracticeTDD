@@ -6,7 +6,7 @@ interface CustomObservable<T, U> {
     fun update(argument: T)
     fun removeObserver(observer: U)
 
-    class Base<T, U : CustomObserver<T>>(
+    class Base<T : CustomObject, U : CustomObserver<T>>(
         private val observers: MutableList<U> = mutableListOf()
     ) : CustomObservable<T, U>{
 
@@ -16,15 +16,13 @@ interface CustomObservable<T, U> {
 
         override fun update(argument: T) {
             observers.forEach{
-                it.update(argument)
+                if(argument.checkObserver(it))
+                    it.update(argument)
             }
         }
 
         override fun removeObserver(observer: U) {
             observers.remove(observer)
         }
-
-
     }
-
 }
