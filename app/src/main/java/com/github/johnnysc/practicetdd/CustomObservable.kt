@@ -7,6 +7,7 @@ interface CustomObservable<T, U> {
     fun removeObserver(observer: U)
 
     class Base<T, U : CustomObserver<T>>(
+        private val maxCount: Int = Int.MAX_VALUE,
         private val observers: MutableList<U> = mutableListOf()
     ) : CustomObservable<T, U>{
 
@@ -15,7 +16,10 @@ interface CustomObservable<T, U> {
         }
 
         override fun update(argument: T) {
-            observers.forEach{
+            if(observers.isEmpty())
+                return
+
+            observers.subList(observers.size-maxCount, observers.size).forEach{
                 it.update(argument)
             }
         }
