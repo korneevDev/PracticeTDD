@@ -1,6 +1,6 @@
 package com.github.johnnysc.practicetdd
 
-class ViewModelChain(private val featureChain: FeatureChain) : FeatureChain.Handle {
+class ViewModelChain(private val featureChain: FeatureChain.CheckAndHandle) : FeatureChain.Handle {
 
     private var nextChain : FeatureChain = FeatureChain.Empty()
     fun nextFeatureChain(nextFeatureChain: FeatureChain) {
