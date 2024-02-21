@@ -66,7 +66,7 @@ class MessagesViewModelTest {
 
     private class TestChainTwo : FeatureChain.Handle {
         override suspend fun handle(message: String): MessageUI =
-            MessageUI.AiError(text = "I don't understand you")
+            MessageUI.AiError(text = "I don't understand you", id = "1")
     }
 
     private class TestCommunication : MessagesCommunication.Mutable {
