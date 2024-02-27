@@ -3,8 +3,8 @@ package com.github.johnnysc.practicetdd
 import android.annotation.SuppressLint
 
 class MainViewModel(
-    private val repository: Repository,
-    private val communication: Communication,
+    private val repository: RepositoryRx,
+    private val communication: CommunicationRx,
     private val schedulersList: SchedulersList
 ) {
     @SuppressLint("CheckResult")

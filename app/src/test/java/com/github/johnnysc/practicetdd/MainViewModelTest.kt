@@ -187,6 +187,7 @@ class MainViewModelTest {
         mainViewModel.fetch()
         assertEquals("network problem", communication.value)
     }
+}
 
     private class TestCommunication : Communication<List<Good>> {
 
@@ -260,14 +261,14 @@ class MainViewModelTest {
 
     }
 
-private class FakeRepository(private val success: Boolean) : Repository {
+private class FakeRepository(private val success: Boolean) : RepositoryRx {
     override fun fetch(): Single<String> = if (success)
         Single.just("success")
     else
         Single.error(IllegalStateException("network problem"))
 }
 
-private class FakeCommunication : Communication {
+private class FakeCommunication : CommunicationRx {
     var value: String = ""
 
     override fun observe(owner: LifecycleOwner, observer: Observer<String>) = Unit
