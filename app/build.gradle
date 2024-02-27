@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace "com.github.johnnysc.practicetdd"
     compileSdk 33
 
     defaultConfig {

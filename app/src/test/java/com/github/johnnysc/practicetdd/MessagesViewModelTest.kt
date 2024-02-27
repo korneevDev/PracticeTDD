@@ -82,7 +82,7 @@ class MessagesViewModelTest {
 
     private class TestDispatchersList(
         private val dispatcher: CoroutineDispatcher = TestCoroutineDispatcher()
-    ) : DispatchersList {
+    ) : DispatchersListLaunchers {
 
         override fun launchUI(
             scope: CoroutineScope,

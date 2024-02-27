@@ -7,6 +7,7 @@ import kotlinx.coroutines.Job
 interface DispatchersList {
     fun io(): CoroutineDispatcher
     fun ui(): CoroutineDispatcher
+}
 
 interface DispatchersListLaunchers {
 

@@ -1,16 +1,25 @@
 package com.github.johnnysc.practicetdd
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 class MessagesViewModel(
     private val communication: MessagesCommunication.Mutable,
-    private val dispatchersList: DispatchersList,
+    private val dispatchersList: DispatchersListLaunchers,
     private val viewModelChain: ViewModelChain
-) : ViewModel(){
+) : ViewModel() {
     suspend fun handleInput(message: String) {
-        communication.map(MessageUI.User(message))
-        val messageUI = viewModelChain.handle(message)
-        communication.map(messageUI)
+        dispatchersList.launchUI(viewModelScope){
+            communication.map(MessageUI.User(message))
+        }
+
+        dispatchersList.changeToUI {
+            dispatchersList.launchBackground(viewModelScope){
+                val messageUI = viewModelChain.handle(message)
+                communication.map(messageUI)
+            }
+        }
+
     }
 
 }
