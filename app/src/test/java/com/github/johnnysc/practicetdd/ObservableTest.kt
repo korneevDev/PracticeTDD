@@ -60,7 +60,6 @@ class ObservableTest {
     }
 }
 
-private data class CustomObject(private val data: String)
 
 private class FakeObserver : CustomObserver<CustomObject> {
 

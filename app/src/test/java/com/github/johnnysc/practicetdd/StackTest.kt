@@ -177,4 +177,4 @@ class StackTest {
     }
 }
 
-private data class CustomObject(val id: String)
+data class CustomObject(val id: String)
