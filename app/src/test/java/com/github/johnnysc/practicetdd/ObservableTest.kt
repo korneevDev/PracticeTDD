@@ -13,8 +13,8 @@ class ObservableTest {
         val observable = CustomObservable.Base<CustomObject, FakeObserver>()
         val fakeObserver = FakeObserver()
         observable.addObserver(observer = fakeObserver)
-        observable.update(argument = CustomObject("one"))
-        assertEquals(CustomObject("one"), fakeObserver.customObject)
+        observable.update(argument = CustomObjectClass("one"))
+        assertEquals(CustomObjectClass("one"), fakeObserver.customObject)
     }
 
     @Test
@@ -24,9 +24,9 @@ class ObservableTest {
         val fakeObserverTwo = FakeObserver()
         observable.addObserver(observer = fakeObserverOne)
         observable.addObserver(observer = fakeObserverTwo)
-        observable.update(argument = CustomObject("one"))
-        assertEquals(CustomObject("one"), fakeObserverOne.customObject)
-        assertEquals(CustomObject("one"), fakeObserverTwo.customObject)
+        observable.update(argument = CustomObjectClass("one"))
+        assertEquals(CustomObjectClass("one"), fakeObserverOne.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTwo.customObject)
     }
 
     @Test
@@ -34,8 +34,8 @@ class ObservableTest {
         val observable = CustomObservable.Base<CustomObject, FakeObserver>()
         val fakeObserver = FakeObserver()
         observable.addObserver(observer = fakeObserver)
-        observable.update(argument = CustomObject("one"))
-        assertEquals(CustomObject("one"), fakeObserver.customObject)
+        observable.update(argument = CustomObjectClass("one"))
+        assertEquals(CustomObjectClass("one"), fakeObserver.customObject)
     }
 
     @Test
@@ -45,14 +45,14 @@ class ObservableTest {
         val fakeObserverTwo = FakeObserver()
         observable.addObserver(observer = fakeObserverOne)
         observable.addObserver(observer = fakeObserverTwo)
-        observable.update(argument = CustomObject("one"))
-        assertEquals(CustomObject("one"), fakeObserverOne.customObject)
-        assertEquals(CustomObject("one"), fakeObserverTwo.customObject)
+        observable.update(argument = CustomObjectClass("one"))
+        assertEquals(CustomObjectClass("one"), fakeObserverOne.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTwo.customObject)
 
         observable.removeObserver(observer = fakeObserverOne)
-        observable.update(argument = CustomObject("two"))
-        assertEquals(CustomObject("one"), fakeObserverOne.customObject)
-        assertEquals(CustomObject("two"), fakeObserverTwo.customObject)
+        observable.update(argument = CustomObjectClass("two"))
+        assertEquals(CustomObjectClass("one"), fakeObserverOne.customObject)
+        assertEquals(CustomObjectClass("two"), fakeObserverTwo.customObject)
     }
 
     @Test
