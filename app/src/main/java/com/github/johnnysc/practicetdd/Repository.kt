@@ -1,5 +1,7 @@
 package com.github.johnnysc.practicetdd
 
+import io.reactivex.Single
+
 interface Repository {
     class Base(private val api: Api) {
         fun fetch(value: String, callback: DataCallback) {
@@ -55,3 +57,6 @@ interface Api {
 
 }
 
+interface RepositoryRx {
+    fun fetch(): Single<String>
+}

@@ -8,11 +8,18 @@ import com.github.johnnysc.practicetdd.seven.GoodFilter
 import com.github.johnnysc.practicetdd.seven.MainViewModel
 import com.github.johnnysc.practicetdd.seven.OS
 import com.github.johnnysc.practicetdd.seven.ProcessorType
+import io.reactivex.Scheduler
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
+<<<<<<< HEAD
  * @author Asatryan on 26.12.2022
+=======
+ * @author Asatryan on 02.01.2023
+>>>>>>> origin/task/022-rx-viewmodel
  */
 class MainViewModelTest {
 
@@ -155,6 +162,32 @@ class MainViewModelTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun test_success() {
+        val repository = FakeRepository(true)
+        val communication = FakeCommunication()
+        val mainViewModel = MainViewModel(
+            repository = repository,
+            communication = communication,
+            schedulersList = TestSchedulersList()
+        )
+        mainViewModel.fetch()
+        assertEquals("success", communication.value)
+    }
+
+    @Test
+    fun test_error() {
+        val repository = FakeRepository(false)
+        val communication = FakeCommunication()
+        val mainViewModel = MainViewModel(
+            repository,
+            communication,
+            TestSchedulersList()
+        )
+        mainViewModel.fetch()
+        assertEquals("network problem", communication.value)
+    }
+
     private class TestCommunication : Communication<List<Good>> {
 
         val list = mutableListOf<Good>()
@@ -226,4 +259,26 @@ class MainViewModelTest {
             filter.map(ram, os, displaySize, processor, price)
 
     }
+
+private class FakeRepository(private val success: Boolean) : Repository {
+    override fun fetch(): Single<String> = if (success)
+        Single.just("success")
+    else
+        Single.error(IllegalStateException("network problem"))
+}
+
+private class FakeCommunication : Communication {
+    var value: String = ""
+
+    override fun observe(owner: LifecycleOwner, observer: Observer<String>) = Unit
+
+    override fun map(data: String) {
+        value = data
+    }
+}
+
+private class TestSchedulersList : SchedulersList {
+    private val sheduler = Schedulers.trampoline()
+    override fun io(): Scheduler = sheduler
+    override fun ui(): Scheduler = sheduler
 }
