@@ -45,3 +45,4 @@ private class FakeApi : Api {
             callback.provideSuccess(Api.Result.Success(data = "successful response"))
     }
 }
+
