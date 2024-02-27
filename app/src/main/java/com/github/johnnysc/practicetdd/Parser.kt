@@ -24,7 +24,7 @@ interface Parser {
 
 }
 
-interface SingleParser{
+interface SingleParser {
     fun parse(raw: String): Any
 
     class OneItem(
@@ -41,28 +41,31 @@ interface SingleParser{
             if (charChecker.isType(raw))
                 return raw[0]
 
-            if(boolChecker.isType(raw))
+            if (boolChecker.isType(raw))
                 return raw == "true"
 
-            if(byteChecker.isType(raw))
+            if (byteChecker.isType(raw))
                 return raw.toByte()
 
-            if(shortChecker.isType(raw))
+            if (shortChecker.isType(raw))
                 return raw.toShort()
 
-            if(intChecker.isType(raw))
+            if (intChecker.isType(raw))
                 return raw.toInt()
 
-            if(longChecker.isType(raw))
+            if (longChecker.isType(raw))
                 return raw.toLong()
 
-            if(floatChecker.isType(raw))
+            if (floatChecker.isType(raw))
                 return raw.toFloat()
 
-            if(doubleChecker.isType(raw))
+            if (doubleChecker.isType(raw))
                 return raw.toDouble()
 
             return raw
         }
     }
+}
+interface ParserMap<T> {
+    fun map(data: String): IsEmptyHandleUseCase<T>
 }
