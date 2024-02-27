@@ -164,8 +164,8 @@ class MainViewModelTest {
 
     @Test
     fun test_success() {
-        val repository = FakeRepository(true)
-        val communication = FakeCommunication()
+        val repository = FakeRepositoryRx(true)
+        val communication = FakeCommunicationRx()
         val mainViewModel = MainViewModel(
             repository = repository,
             communication = communication,
@@ -177,8 +177,8 @@ class MainViewModelTest {
 
     @Test
     fun test_error() {
-        val repository = FakeRepository(false)
-        val communication = FakeCommunication()
+        val repository = FakeRepositoryRx(false)
+        val communication = FakeCommunicationRx()
         val mainViewModel = MainViewModel(
             repository,
             communication,
@@ -261,14 +261,14 @@ class MainViewModelTest {
 
     }
 
-private class FakeRepository(private val success: Boolean) : RepositoryRx {
+private class FakeRepositoryRx(private val success: Boolean) : RepositoryRx {
     override fun fetch(): Single<String> = if (success)
         Single.just("success")
     else
         Single.error(IllegalStateException("network problem"))
 }
 
-private class FakeCommunication : CommunicationRx {
+private class FakeCommunicationRx : CommunicationRx {
     var value: String = ""
 
     override fun observe(owner: LifecycleOwner, observer: Observer<String>) = Unit

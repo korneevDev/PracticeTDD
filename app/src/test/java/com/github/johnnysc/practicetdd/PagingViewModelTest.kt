@@ -18,43 +18,43 @@ class PagingViewModelTest {
 
         viewModel.init(isFirstRun = true)
         var expected = listOf(
-            MessageUi.Base(id = 0, "text of message 0"),
-            MessageUi.Base(id = 1, "text of message 1"),
-            MessageUi.LoadMore
+            MessageUI.Base(id = 0, "text of message 0"),
+            MessageUI.Base(id = 1, "text of message 1"),
+            MessageUI.LoadMore
         )
         assertEquals(expected, communication.list)
 
         viewModel.loadMore()
         expected = listOf(
-            MessageUi.LoadPrevious,
-            MessageUi.Base(id = 2, "text of message 2"),
-            MessageUi.Base(id = 3, "text of message 3"),
-            MessageUi.LoadMore
+            MessageUI.LoadPrevious,
+            MessageUI.Base(id = 2, "text of message 2"),
+            MessageUI.Base(id = 3, "text of message 3"),
+            MessageUI.LoadMore
         )
         assertEquals(expected, communication.list)
 
         viewModel.loadMore()
         expected = listOf(
-            MessageUi.LoadPrevious,
-            MessageUi.Base(id = 4, "text of message 4"),
-            MessageUi.Base(id = 5, "text of message 5")
+            MessageUI.LoadPrevious,
+            MessageUI.Base(id = 4, "text of message 4"),
+            MessageUI.Base(id = 5, "text of message 5")
         )
         assertEquals(expected, communication.list)
 
         viewModel.loadPrevious()
         expected = listOf(
-            MessageUi.LoadPrevious,
-            MessageUi.Base(id = 2, "text of message 2"),
-            MessageUi.Base(id = 3, "text of message 3"),
-            MessageUi.LoadMore
+            MessageUI.LoadPrevious,
+            MessageUI.Base(id = 2, "text of message 2"),
+            MessageUI.Base(id = 3, "text of message 3"),
+            MessageUI.LoadMore
         )
         assertEquals(expected, communication.list)
 
         viewModel.loadPrevious()
         expected = listOf(
-            MessageUi.Base(id = 0, "text of message 0"),
-            MessageUi.Base(id = 1, "text of message 1"),
-            MessageUi.LoadMore
+            MessageUI.Base(id = 0, "text of message 0"),
+            MessageUI.Base(id = 1, "text of message 1"),
+            MessageUI.LoadMore
         )
         assertEquals(expected, communication.list)
     }
@@ -95,11 +95,11 @@ private class FakeRepository : PagingRepository {
 
 private class FakeCommunication : Communication {
 
-    var list = listOf<MessageUi>()
+    var list = listOf<MessageUI>()
 
-    override fun map(data: List<MessageUi>) {
+    override fun map(data: List<MessageUI>) {
         list = data
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<List<MessageUi>>) = Unit
+    override fun observe(owner: LifecycleOwner, observer: Observer<List<MessageUI>>) = Unit
 }

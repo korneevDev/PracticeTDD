@@ -3,7 +3,7 @@ package com.github.johnnysc.practicetdd
 class PagingViewModel(
     private val repository: PagingRepository,
     private val communication: Communication,
-    private val mapper: Mapper<MessageUi> = MapperToUI()
+    private val mapper: Mapper<MessageUI> = MapperToUI()
 ) {
     fun init(isFirstRun: Boolean) {
         if (isFirstRun)
@@ -23,8 +23,8 @@ class PagingViewModel(
 
 }
 
-class MapperToUI : Mapper<MessageUi> {
-    override fun mapSuccess(id: Int, text: String): MessageUi = MessageUi.Base(id, text)
-    override fun mapToPrevious(): MessageUi = MessageUi.LoadPrevious
-    override fun mapToNext(): MessageUi = MessageUi.LoadMore
+class MapperToUI : Mapper<MessageUI> {
+    override fun mapSuccess(id: Int, text: String): MessageUI = MessageUI.Base(id, text)
+    override fun mapToPrevious(): MessageUI = MessageUI.LoadPrevious
+    override fun mapToNext(): MessageUI = MessageUI.LoadMore
 }
