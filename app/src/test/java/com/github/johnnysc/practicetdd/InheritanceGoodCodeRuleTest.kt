@@ -71,6 +71,7 @@ class InheritanceGoodCodeRuleTest {
         )
 
         sourceList.forEach {
+            print("\n|\n" + it)
             assertEquals(true, rule.isValid(text = it))
         }
     }
@@ -91,6 +92,7 @@ class InheritanceGoodCodeRuleTest {
                     "abstract class AbstractX : MainLevelAbstract()"
         )
         sourceList.forEach {
+            print(it)
             assertEquals(false, rule.isValid(text = it))
         }
     }
