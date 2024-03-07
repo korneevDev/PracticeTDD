@@ -2,6 +2,7 @@ package com.github.johnnysc.practicetdd
 
 interface MyObservable<T> {
     fun setValue(value: T)
+
     fun setObserver(observer: MyObserver<T>)
 
     class SingleLiveEvent<T> : MyObservable<T> {
