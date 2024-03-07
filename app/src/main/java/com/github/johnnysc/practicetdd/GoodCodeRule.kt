@@ -12,10 +12,11 @@ interface GoodCodeRule {
 
             val textWithoutPackage = packageRegEx.replace(text, "").trim()
             val textWithoutImports = importRegEx.replace(textWithoutPackage, "").trim()
+            val textWithoutEscapes = textWithoutImports.replace("\n", "")
 
             return validatorsList.first {
-                it.canHandle(textWithoutImports)
-            }.isValid(textWithoutImports)
+                it.canHandle(textWithoutEscapes)
+            }.isValid(textWithoutEscapes)
         }
 
     }
@@ -74,5 +75,65 @@ interface GoodCodeRule {
 
     class Inheritance :
         Base(listOf(ClassInheritance(), AbstractClassInheritance(), InterfaceInheritance()))
+
+    class Functions : Base(listOf(InterfaceFunctions(), AbstractClassFunctions(), ClassFunctions()))
+
+    class InterfaceFunctions : Abstract("^interface .+", "", "") {
+        override fun isValid(text: String): Boolean {
+
+            val defaultFunPattern = Regex("fun .*=.*")
+
+            if(defaultFunPattern.containsMatchIn(text))
+                return false
+
+            print(defaultFunPattern.containsMatchIn(text))
+            print(text)
+
+            val paramsPattern = Regex("[a-zA-Z0-9]+ ?: ?[a-zA-Z0-9]*")
+
+            if(paramsPattern.findAll(text).count() > 5)
+                return false
+
+            val funPattern = Regex("fun [a-zA-Z0-9]*")
+
+            return funPattern.findAll(text).count() <= 5
+        }
+    }
+
+    class ClassFunctions : Abstract("^class .+", "", "") {
+
+        override fun isValid(text: String): Boolean {
+            val privateFunPattern = Regex("private fun")
+
+            if (privateFunPattern.containsMatchIn(text))
+                return false
+
+            val protectedFunPattern = Regex("protected fun")
+
+            if (protectedFunPattern.containsMatchIn(text))
+                return false
+
+            val overrideFunPattern = Regex("override fun")
+            val simpleFunPattern = Regex("fun")
+
+            return overrideFunPattern.findAll(text).count() ==
+                    simpleFunPattern.findAll(text).count()
+        }
+    }
+
+    class AbstractClassFunctions : Abstract("^abstract class .+", "", ""){
+        override fun isValid(text: String): Boolean {
+            val privateFunPattern = Regex("private fun")
+
+            if (privateFunPattern.containsMatchIn(text))
+                return false
+
+            val overrideFunPattern = Regex("(protected|override|protected abstract) fun")
+            val simpleFunPattern = Regex("fun")
+
+            return overrideFunPattern.findAll(text).count() ==
+                    simpleFunPattern.findAll(text).count()
+        }
+    }
 
 }
