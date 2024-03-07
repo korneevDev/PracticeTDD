@@ -14,13 +14,6 @@ import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/**
-<<<<<<< HEAD
- * @author Asatryan on 26.12.2022
-=======
- * @author Asatryan on 02.01.2023
->>>>>>> origin/task/022-rx-viewmodel
- */
 class MainViewModelTest {
 
     @Test
@@ -166,7 +159,7 @@ class MainViewModelTest {
     fun test_success() {
         val repository = FakeRepositoryRx(true)
         val communication = FakeCommunicationRx()
-        val mainViewModel = MainViewModel(
+        val mainViewModel = MainViewModelRx(
             repository = repository,
             communication = communication,
             schedulersList = TestSchedulersList()
@@ -179,7 +172,7 @@ class MainViewModelTest {
     fun test_error() {
         val repository = FakeRepositoryRx(false)
         val communication = FakeCommunicationRx()
-        val mainViewModel = MainViewModel(
+        val mainViewModel = MainViewModelRx(
             repository,
             communication,
             TestSchedulersList()
@@ -187,79 +180,126 @@ class MainViewModelTest {
         mainViewModel.fetch()
         assertEquals("network problem", communication.value)
     }
+
+    @Test
+    fun test_single_live_event() {
+        val myLiveData: MyObservable<String> = MyObservable.SingleLiveEvent()
+        val observer = FakeObserver()
+        val viewModel = MainViewModel(liveData = myLiveData)
+        viewModel.updateObserver(observer = observer)
+        viewModel.go()
+        assertEquals("1", observer.list[0])
+        assertEquals(1, observer.list.size)
+        viewModel.go()
+        assertEquals("2", observer.list[1])
+        assertEquals(2, observer.list.size)
+        viewModel.updateObserver(MyObserver.Empty())
+        viewModel.go()
+        assertEquals(2, observer.list.size)
+        viewModel.updateObserver(observer)
+        viewModel.notifyChanges()
+        assertEquals("3", observer.list[2])
+        assertEquals(3, observer.list.size)
+        viewModel.notifyChanges()
+        assertEquals(3, observer.list.size)
+    }
+
+    @Test
+    fun test_base() {
+        val myLiveData: MyObservable<String> = MyObservable.Base()
+        val observer = FakeObserver()
+        val viewModel = MainViewModel(liveData = myLiveData)
+        viewModel.updateObserver(observer = observer)
+        viewModel.go()
+        assertEquals("1", observer.list[0])
+        assertEquals(1, observer.list.size)
+        viewModel.go()
+        assertEquals("2", observer.list[1])
+        assertEquals(2, observer.list.size)
+        viewModel.updateObserver(MyObserver.Empty())
+        viewModel.go()
+        assertEquals(2, observer.list.size)
+        viewModel.updateObserver(observer)
+        viewModel.notifyChanges()
+        assertEquals("3", observer.list[2])
+        assertEquals(3, observer.list.size)
+        viewModel.notifyChanges()
+        assertEquals("3", observer.list[3])
+        assertEquals(4, observer.list.size)
+    }
 }
 
-    private class TestCommunication : Communication<List<Good>> {
+private class TestCommunication : Communication<List<Good>> {
 
-        val list = mutableListOf<Good>()
+    val list = mutableListOf<Good>()
 
-        override fun observe(owner: LifecycleOwner, observer: Observer<List<Good>>) = Unit
+    override fun observe(owner: LifecycleOwner, observer: Observer<List<Good>>) = Unit
 
-        override fun map(source: List<Good>) {
-            list.clear()
-            list.addAll(source)
-        }
+    override fun map(source: List<Good>) {
+        list.clear()
+        list.addAll(source)
+    }
+}
+
+private class TestFiltersCommunication : Communication<List<GoodFilter>> {
+    val list = mutableListOf<GoodFilter>()
+
+    override fun map(source: List<GoodFilter>) {
+        list.clear()
+        list.addAll(source)
     }
 
-    private class TestFiltersCommunication : Communication<List<GoodFilter>> {
-        val list = mutableListOf<GoodFilter>()
+    override fun observe(owner: LifecycleOwner, observer: Observer<List<GoodFilter>>) = Unit
+}
 
-        override fun map(source: List<GoodFilter>) {
-            list.clear()
-            list.addAll(source)
-        }
+private data class TestOsFilter(private val os: OS) : GoodFilter.Abstract() {
 
-        override fun observe(owner: LifecycleOwner, observer: Observer<List<GoodFilter>>) = Unit
-    }
+    override fun map(
+        ram: Int,
+        os: OS,
+        displaySize: Double,
+        processor: ProcessorType,
+        price: Double
+    ): Boolean = this.os == os
+}
 
-    private data class TestOsFilter(private val os: OS) : GoodFilter.Abstract() {
+private data class TestRamFilter(private val ram: Int) : GoodFilter.Abstract() {
 
-        override fun map(
-            ram: Int,
-            os: OS,
-            displaySize: Double,
-            processor: ProcessorType,
-            price: Double
-        ): Boolean = this.os == os
-    }
+    override fun map(
+        ram: Int,
+        os: OS,
+        displaySize: Double,
+        processor: ProcessorType,
+        price: Double
+    ): Boolean = this.ram == ram
+}
 
-    private data class TestRamFilter(private val ram: Int) : GoodFilter.Abstract() {
+private data class TestPriceUnder(private val maxPrice: Double) : GoodFilter.Abstract() {
 
-        override fun map(
-            ram: Int,
-            os: OS,
-            displaySize: Double,
-            processor: ProcessorType,
-            price: Double
-        ): Boolean = this.ram == ram
-    }
+    override fun map(
+        ram: Int,
+        os: OS,
+        displaySize: Double,
+        processor: ProcessorType,
+        price: Double
+    ): Boolean = this.maxPrice >= price
+}
 
-    private data class TestPriceUnder(private val maxPrice: Double) : GoodFilter.Abstract() {
+private data class TestGood(
+    private val ram: Int = 16,
+    private val os: OS = OS.MAC,
+    private val displaySize: Double = 13.0,
+    private val processor: ProcessorType = ProcessorType.M1,
+    private val price: Double = 2000.0
+) : Good {
 
-        override fun map(
-            ram: Int,
-            os: OS,
-            displaySize: Double,
-            processor: ProcessorType,
-            price: Double
-        ): Boolean = this.maxPrice >= price
-    }
+    override fun <T> map(mapper: Good.Mapper<T>): T =
+        mapper.map(ram, os, displaySize, processor, price)
 
-    private data class TestGood(
-        private val ram: Int = 16,
-        private val os: OS = OS.MAC,
-        private val displaySize: Double = 13.0,
-        private val processor: ProcessorType = ProcessorType.M1,
-        private val price: Double = 2000.0
-    ) : Good {
+    override fun check(filter: GoodFilter): Boolean =
+        filter.map(ram, os, displaySize, processor, price)
 
-        override fun <T> map(mapper: Good.Mapper<T>): T =
-            mapper.map(ram, os, displaySize, processor, price)
-
-        override fun check(filter: GoodFilter): Boolean =
-            filter.map(ram, os, displaySize, processor, price)
-
-    }
+}
 
 private class FakeRepositoryRx(private val success: Boolean) : RepositoryRx {
     override fun fetch(): Single<String> = if (success)
@@ -282,4 +322,10 @@ private class TestSchedulersList : SchedulersList {
     private val sheduler = Schedulers.trampoline()
     override fun io(): Scheduler = sheduler
     override fun ui(): Scheduler = sheduler
+}
+private class FakeObserver : MyObserver<String> {
+    val list = ArrayList<String>()
+    override fun update(value: String) {
+        list.add(value)
+    }
 }
