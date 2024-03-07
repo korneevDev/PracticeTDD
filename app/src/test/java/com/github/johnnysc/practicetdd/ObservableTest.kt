@@ -10,49 +10,49 @@ class ObservableTest {
 
     @Test
     fun test_one_observer() {
-        val observable = CustomObservable.Base<CustomObject, FakeObserver>()
-        val fakeObserver = FakeObserver()
-        observable.addObserver(observer = fakeObserver)
+        val observable = CustomObservable.Base<CustomObject, FakeObserverT>()
+        val fakeObserverT = FakeObserverT()
+        observable.addObserver(observer = fakeObserverT)
         observable.update(argument = CustomObjectClass("one"))
-        assertEquals(CustomObjectClass("one"), fakeObserver.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverT.customObject)
     }
 
     @Test
     fun test_two_observers() {
-        val observable = CustomObservable.Base<CustomObject, FakeObserver>()
-        val fakeObserverOne = FakeObserver()
-        val fakeObserverTwo = FakeObserver()
-        observable.addObserver(observer = fakeObserverOne)
-        observable.addObserver(observer = fakeObserverTwo)
+        val observable = CustomObservable.Base<CustomObject, FakeObserverT>()
+        val fakeObserverTOne = FakeObserverT()
+        val fakeObserverTTwo = FakeObserverT()
+        observable.addObserver(observer = fakeObserverTOne)
+        observable.addObserver(observer = fakeObserverTTwo)
         observable.update(argument = CustomObjectClass("one"))
-        assertEquals(CustomObjectClass("one"), fakeObserverOne.customObject)
-        assertEquals(CustomObjectClass("one"), fakeObserverTwo.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTOne.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTTwo.customObject)
     }
 
     @Test
     fun test_add_and_remove_observer() {
-        val observable = CustomObservable.Base<CustomObject, FakeObserver>()
-        val fakeObserver = FakeObserver()
-        observable.addObserver(observer = fakeObserver)
+        val observable = CustomObservable.Base<CustomObject, FakeObserverT>()
+        val fakeObserverT = FakeObserverT()
+        observable.addObserver(observer = fakeObserverT)
         observable.update(argument = CustomObjectClass("one"))
-        assertEquals(CustomObjectClass("one"), fakeObserver.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverT.customObject)
     }
 
     @Test
     fun test_add_and_remove_two_observers() {
-        val observable = CustomObservable.Base<CustomObject, FakeObserver>()
-        val fakeObserverOne = FakeObserver()
-        val fakeObserverTwo = FakeObserver()
-        observable.addObserver(observer = fakeObserverOne)
-        observable.addObserver(observer = fakeObserverTwo)
+        val observable = CustomObservable.Base<CustomObject, FakeObserverT>()
+        val fakeObserverTOne = FakeObserverT()
+        val fakeObserverTTwo = FakeObserverT()
+        observable.addObserver(observer = fakeObserverTOne)
+        observable.addObserver(observer = fakeObserverTTwo)
         observable.update(argument = CustomObjectClass("one"))
-        assertEquals(CustomObjectClass("one"), fakeObserverOne.customObject)
-        assertEquals(CustomObjectClass("one"), fakeObserverTwo.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTOne.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTTwo.customObject)
 
-        observable.removeObserver(observer = fakeObserverOne)
+        observable.removeObserver(observer = fakeObserverTOne)
         observable.update(argument = CustomObjectClass("two"))
-        assertEquals(CustomObjectClass("one"), fakeObserverOne.customObject)
-        assertEquals(CustomObjectClass("two"), fakeObserverTwo.customObject)
+        assertEquals(CustomObjectClass("one"), fakeObserverTOne.customObject)
+        assertEquals(CustomObjectClass("two"), fakeObserverTTwo.customObject)
     }
 
     @Test
@@ -105,11 +105,11 @@ private interface Video : CustomObject {
     data class Usual(private val link: String) : CustomObject.Usual(), Video
 }
 
-private class FakeObserver : CustomObserver<CustomObject> {
+private class FakeObserverT : CustomObserver<CustomObject> {
 
     var customObject: CustomObject? = null
-    override fun update(argument: CustomObject) {
-        customObject = argument
+    override fun update(obj: CustomObject) {
+        customObject = obj
     }
 }
 
