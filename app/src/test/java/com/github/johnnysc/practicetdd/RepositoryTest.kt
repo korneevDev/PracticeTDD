@@ -8,12 +8,12 @@ import org.junit.Test
 
 class RepositoryTest {
 
-    @Test(timeout = 1100)
+    @Test(timeout = 1500)
     fun multithreading() = runBlocking {
         val service: SomeService = FakeService()
         val repository: Repository = Repository.Base(service = service, dispatcher = Unconfined)
-        val actual = repository.jokes()
-        val expected = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+        val actual = repository.jokes(1000)
+        val expected = (0.. 1000).map { it.toString() }
         assertEquals(expected, actual)
     }
 }
