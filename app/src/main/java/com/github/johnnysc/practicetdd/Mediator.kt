@@ -15,7 +15,22 @@ interface Mediator {
                 it.receive(message)
             }
         }
+    }
+}
 
+interface MediatorChoice{
+    fun change(choice: Choice, block: () -> Unit)
+
+    class Base : MediatorChoice{
+
+        private var choiced : Choice? = null
+        override fun change(choice: Choice, block: () -> Unit) {
+            choiced?.rollback()
+            choiced = choice
+            choice.chose()
+            block.invoke()
+
+        }
 
     }
 

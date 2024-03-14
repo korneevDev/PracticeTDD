@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PracticeTDD</string>
+    <string name="choice_1">first choice</string>
+    <string name="choice_2">second choice</string>
+    <string name="choice_3">third choice</string>
+    <string name="save">save</string>
 </resources>

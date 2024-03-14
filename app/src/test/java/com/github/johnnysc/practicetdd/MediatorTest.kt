@@ -9,8 +9,8 @@ import org.junit.Test
 class MediatorTest {
 
     @Test
-    fun test() {
-        val mediator = Mediator.Base()
+    fun test_1() {
+        val mediator = MediatorChoice.Base()
         val choiceOne = FakeChoice()
         val choiceTwo = FakeChoice()
         var count = 0
@@ -39,7 +39,7 @@ class MediatorTest {
     }
 
     @Test
-    fun test() {
+    fun test_2() {
         val mediator: Mediator = Mediator.Base()
         val userOne = FakeUser(id = "1", mediator = mediator)
         val userTwo = FakeUser(id = "2", mediator = mediator)
@@ -76,7 +76,7 @@ class MediatorTest {
 
 private class FakeChoice : Choice {
 
-    override fun init(mediator: Mediator, block: () -> Unit) = Unit
+    override fun init(mediator: MediatorChoice, block: () -> Unit) = Unit
 
     override fun isChosen() =
         choseCalledCount != 0 && rollbackCalledCount != 0 && choseCalledCount > rollbackCalledCount
